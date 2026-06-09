@@ -598,6 +598,29 @@
     text-indent: 0 !important;
   }
 }
+    /* --- COMPORTEMENT DES IMAGES DE FOND SUR TÉLÉPHONE --- */
+@media (max-width: 768px) {
+  
+  /* On force le conteneur à passer en mode vertical (l'une au-dessus de l'autre) */
+  .fullscreen-bg-projects {
+    flex-direction: column !important;
+  }
+
+  /* Chaque image prend désormais 100% de la largeur du téléphone et 50% de sa hauteur */
+  .bg-col {
+    flex: none !important;     /* On annule le "1/3 de la largeur" du PC */
+    width: 100% !important;    /* On prend toute la largeur de l'écran */
+    height: 50% !important;    /* On prend la moitié de la hauteur de l'écran */
+  }
+
+  /* On retire tes bordures noires latérales devenues inutiles ou mal placées en vertical */
+  .img-col-2 {
+    border-left: none !important;
+    border-right: none !important;
+    /* Optionnel : si tu veux une petite séparation horizontale entre les deux images */
+    border-top: 2px solid #021112; 
+  }
+}
   </style>
 
 </head>
