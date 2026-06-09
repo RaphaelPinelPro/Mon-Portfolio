@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio de Raphaël Pinel</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+  body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      color: #f0f0f0;
+      overflow-x: hidden;
+      
+      /* FINI LE NOIR : Un vrai dégradé émeraude/bleu canard riche et visible */
+      background: linear-gradient(135deg, #063135 0%, #0a4b51 50%, #042326 100%);
+      background-attachment: fixed; /* Le fond reste fixe pendant le défilement */
+    }
+
+    /* Le motif de grille, rendu un peu plus visible sur ce fond */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(255, 167, 38, 0.15) 1.5px, transparent 0);
+      background-size: 50px 50px;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+/* La Voie Lactée Orange (effet nébuleuse floutée en diagonale) */
+    .voie-lactee {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg); /* Traverse le site en diagonale */
+      width: 140%;
+      height: 180px;
+      /* Dégradé orange chaud ultra-doux qui s'estompe sur les bords */
+      background: radial-gradient(ellipse at center, rgba(255, 145, 0, 0.18) 0%, rgba(255, 100, 0, 0.05) 40%, transparent 70%);
+      filter: blur(40px);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    /* Les poussières d'étoiles de la galaxie */
+    .voie-lactee::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Génère des micro-points blancs/dorés pour simuler des étoiles */
+      background-image: radial-gradient(rgba(255, 200, 100, 0.4) 1px, transparent 0);
+      background-size: 15px 15px;
+      mask-image: linear-gradient(to bottom, transparent, black, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black, transparent);
+    }
+
+    header {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: transparent !important;
+    }
+
+    /* On force le header à être TOTALEMENT transparent pour ne rien masquer */
+    header {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: transparent !important;
+    }
+    /* --- BARRE LATÉRALE (STYLE COULEUR ADAPTÉE AU FOND) --- */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -230px;
+      width: 230px;
+      height: 100vh;
+      /* ÉMÉRAUDE SOMBRE : Parfaitement raccord avec le fond du site */
+      background: #062528; 
+      /* Un contour noir un peu plus marqué pour détacher la barre du fond */
+      border-right: 2px solid #021112; 
+      transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 30px 20px;
+      box-sizing: border-box;
+      box-shadow: 5px 0 25px rgba(0,0,0,0.6);
+    }
+
+    .sidebar:hover { left: 0; }
+
+    /* L'ONGLET DE L'INTERCALAIRE (DÉFINI EN COMPLÉMENTAIRE) */
+    .sidebar::after {
+      content: "📁 MENU";
+      font-weight: bold;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      /* Couleur texte onglet (sur fond doré) */
+      color: #041a1c; 
+      writing-mode: vertical-rl;
+      text-align: center;
+      position: absolute;
+      top: 15%;
+      right: -35px;
+      width: 35px;
+      height: 120px;
+      /* COULEUR COMPLÉMENTAIRE : Doré-Orangé chaud */
+      background: #ffa726; 
+      border-radius: 0 10px 10px 0;
+      box-shadow: 3px 2px 5px rgba(0,0,0,0.3);
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: 0.3s;
+    }
+
+    .sidebar:hover::after {
+      /* Quand ouvert, l'onglet devient gris/noir discret */
+      background: #393e46; 
+      color: #f0f0f0;
+      content: "◀ FERMER";
+    }
+
+/* TEXTES BARRE (PASSE EN CLAIR SUR LA BARRE SOMBRE) */
+    .sidebar-top h3 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+      color: #ffa726; /* Ton nom s'affiche en doré ! */
+    }
+    .sidebar-top p {
+      font-size: 0.85rem;
+      color: #8fa0a2; /* Gris-bleuté doux */
+      margin-top: 0;
+      margin-bottom: 40px;
+    }
+
+    .sidebar-menu { display: flex; flex-direction: column; gap: 15px; }
+    .sidebar-link {
+      color: #020c0d; /* Foncés */
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: 0.3s;
+      padding: 8px 10px;
+      border-radius: 5px;
+    }
+    
+ .sidebar-link {
+      color: #d8d8d8; /* Liens en blanc cassé */
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: 0.3s;
+      padding: 8px 10px;
+      border-radius: 5px;
+    }
+    /* Effet au survol des liens */
+    .sidebar-link:hover {
+      color: #ffa726; /* Le lien devient doré au survol */
+      background: rgba(255, 255, 255, 0.05); /* Léger fond brillant */
+      padding-left: 15px;
+    }
+
+    .btn-pdf {
+      border: 1.5px solid #020c0d; /* Contour sombre */
+      text-align: center;
+      margin-top: 10px;
+    }
+    .btn-pdf:hover {
+      /* Devient doré sur fond émeraude au survol */
+      border-color: #ffa726;
+      background: #ffa726;
+      color: #041a1c !important;
+    }
+    .btn-pdf:hover i {
+      color: #041a1c; /* L'icône change aussi */
+    }
+
+    .sidebar-footer {
+      display: flex;
+      gap: 25px;
+      justify-content: flex-start;
+      border-top: 1px solid rgba(0,0,0,0.2); /* Séparateur discret */
+      padding-top: 20px;
+    }
+    .icon-link {
+      /* Icônes réseaux en foncé */
+      color: #aaaaaa; 
+      font-size: 1.4rem;
+      transition: 0.3s;
+    }
+    .icon-link:hover {
+      /* S'illuminent en doré au survol */
+      color: #ffa726; 
+      transform: scale(1.1);
+    }
+
+    /* --- RESTE DU SITE (AVEC ACCENTS) --- */
+    .main-content { margin-left: 35px; }
+
+    header {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      /* NOUVEAU DÉGRADÉ HEADER : Émeraude sombre vers teal */
+      background: linear-gradient(135deg, #e6a544, #50aab1);
+    }
+
+    h1 { font-size: 3rem; margin-bottom: 10px; color: #f0f0f0; }
+    p { color: #aaa; }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 25px;
+      border: 1px solid #d8d8d8;
+      text-decoration: none;
+      color: #d8d8d8;
+      transition: 0.3s;
+    }
+    .btn:hover {
+      /* Le bouton Me contacter devient doré-orangé */
+      background: #ffa726; 
+      border-color: #ffa726;
+      color: #041a1c;
+    }
+
+    /* Section À Propos avec split layout */
+    section[id="a-propos"] {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      align-items: flex-start;
+      padding: 100px 20px;
+    }
+    section[id="a-propos"] h2 {
+      /* Titre À Propos en doré */
+      color: #ffa726; 
+      flex: 1; min-width: 200px; margin: 0; font-size: 2rem;
+    }
+    section[id="a-propos"] div.text-container {
+      flex: 2; min-width: 300px; font-size: 1.25rem; line-height: 1.8; color: #ccc;
+    }
+    section[id="a-propos"] div.text-container p { margin-top: 0; margin-bottom: 20px; }
+
+    section {
+      padding: 80px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    /* Titres de section par défaut clairs */
+    section h2 { color: #f0f0f0; }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      /* NOUVELLE COULEUR CARTES : Bleu-Teal très sombre */
+      background: #082d2f; 
+      padding: 20px;
+      border-radius: 10px;
+      /* Contour émeraude très sombre discret */
+      border: 1px solid #020c0d; 
+      transition: 0.3s;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(10,224,187,0.1); /* Survol émeraude léger */
+    }
+
+    .btn-projet {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 8px 16px;
+      border: 1px solid #666;
+      border-radius: 5px;
+      text-decoration: none;
+      color: #aaa;
+      font-size: 0.9rem;
+      transition: 0.3s;
+    }
+    .btn-projet:hover {
+      /* Les boutons Découvrir s'illuminent en émeraude clair */
+      border-color: #0ae0bb;
+      color: #0ae0bb;
+      background: rgba(10, 224, 187, 0.05);
+    }
+
+    footer { text-align: center; padding: 40px; color: #777; }
+
+    /* Le conteneur global des 3 colonnes de fond */
+    .fullscreen-bg-projects {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      z-index: -1; /* Reste derrière le texte du header */
+      pointer-events: none;
+    }
+
+    /* Style commun pour chaque colonne projet */
+    .bg-col {
+      flex: 1; /* Prend exactement 1/3 de la largeur */
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0; /* Totalement invisible au départ */
+      transform: translateY(20px); /* Léger effet de glissement vers le haut */
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    /* --- L'EFFET AU SURVOL DU NOM --- */
+    /* Quand on survole le wrapper du nom, les 3 colonnes s'allument à 70% */
+    .name-wrapper:hover ~ .fullscreen-bg-projects .bg-col {
+      opacity: 0.7; 
+      transform: translateY(0);
+    }
+
+    /* Optionnel : petit délai pour que les colonnes apparaissent en cascade (décalées) */
+    .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-1 { transition-delay: 0s; }
+    .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-2 { transition-delay: 0.05s; }
+
+    /* Contours noirs discrets entre les colonnes pour les séparer proprement */
+    .img-col-2 {
+      border-left: 2px solid #021112;
+      border-right: 2px solid #021112;
+    }
+    /* Style du conteneur de base (Fixé pour bloquer les images dedans) */
+    .photos-container {
+      flex: 1;
+      min-width: 320px;
+      position: relative; /* CRUCIAL : Dit aux images de se baser ICI et pas sur tout l'écran */
+      height: 450px;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Style commun aux deux images */
+    .about-img {
+      position: absolute;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 2px solid #021112;
+      box-sizing: border-box;
+      opacity: 1; /* Forcé à 1 par défaut pour éviter qu'elles disparaissent */
+      /* On anime la taille, la position et les effets */
+      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                  z-index 0.1s step-start, 
+                  opacity 0.4s ease,
+                  box-shadow 0.4s ease;
+    }
+
+    /* Positionnement initial de l'image de gauche (Petite) */
+    .img-gauche {
+      left: -20px;
+      bottom: 30px;
+      width: 240px;
+      height: 320px;
+      box-shadow: -5px 10px 25px rgba(0,0,0,0.5);
+      z-index: 1; /* Derrière par défaut */
+    }
+
+    /* Positionnement initial de l'image de droite (Grande) */
+    .img-droite {
+      right: -20px;
+      top: -50px;
+      width: 300px;
+      height: 420px;
+      box-shadow: 5px 10px 30px rgba(0,0,0,0.6);
+      z-index: 2; /* Devant par défaut */
+    }
+
+    /* --- GESTION DES HOVERS CORRIGÉE --- */
+    
+    /* QUAND ON SURVOLE LA GAUCHE */
+    .img-gauche:hover {
+      transform: scale(1.1) translateY(-10px);
+      z-index: 10; /* Passe devant */
+      box-shadow: -10px 15px 35px rgba(10, 224, 187, 0.2);
+      border-color: #0ae0bb;
+      opacity: 1;
+    }
+    /* L'image de droite recule */
+    .photos-container:has(.img-gauche:hover) .img-droite {
+      transform: scale(0.92);
+      opacity: 0.5; /* Recul visuel accentué */
+      z-index: 1;
+    }
+
+    /* QUAND ON SURVOLE LA DROITE */
+    .img-droite:hover {
+      transform: scale(1.08) translateY(-10px);
+      z-index: 10; /* Reste devant */
+      box-shadow: 10px 15px 35px rgba(10, 224, 187, 0.2);
+      border-color: #0ae0bb;
+      opacity: 1;
+    }
+    /* L'image de gauche recule */
+    .photos-container:has(.img-droite:hover) .img-gauche {
+      transform: scale(0.92);
+      opacity: 0.5;
+      z-index: 1;
+    }
+/* Style de base des formes en chevrons */
+    .chevron-pilier {
+      position: relative;
+      width: 260px;
+      height: 110px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px 0 45px;
+      box-sizing: border-box;
+      text-align: center;
+      font-weight: bold;
+      font-size: 0.95rem;
+      color: #ffffff;
+      /* Découpe de la forme de flèche courbée */
+      border-radius: 0 100px 100px 0;
+      clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 25% 50%);
+      margin-left: -35px; /* Fait s'imbriquer les formes les unes dans les autres */
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    /* Alignement correct du texte à l'intérieur */
+    .chevron-pilier span {
+      position: relative;
+      z-index: 7;
+      line-height: 1.5;
+      left: 10px;
+    }
+
+    /* Dégradé de couleur progressif adapté à l'univers émeraude/bleu */
+    .pilier-1 { background: linear-gradient(90deg, #ce7611, #c98725); }
+    .pilier-2 { background: linear-gradient(90deg, #0a4b51, #063135); }
+    .pilier-3 { background: linear-gradient(90deg, #063135, #031c1e); border: 1px solid rgba(255,167,38,0.3); }
+
+    /* Petit effet au survol de la frise */
+    .chevron-pilier:hover {
+      transform: scale(1.03) translateY(-3px);
+      filter: brightness(1.2);
+      z-index: 10;
+    }
+
+    /* --- CODES POUR LA VISION DU DESIGN --- */
+  .piliers-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 60px;
+    flex-wrap: wrap;
+    background: transparent;
+  }
+
+ .chevron-pilier {
+    position: relative;
+    width: 310px;
+    height: 110px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #ffffff;
+    background: linear-gradient(90deg, #ffa726 0%, #ff7043 100%);
+    clip-path: polygon(0% 0%, 85% 0%, 100% 50%, 85% 100%, 0% 100%, 15% 50%);
+    margin-left: -40px; 
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                z-index 0.1s step-start, 
+                opacity 0.4s ease,
+                filter 0.4s ease;
+    z-index: 1;
+    cursor: pointer;
+    
+    /* 1. On applique d'abord un padding de sécurité global pour les chevrons à encoche (2 et 3) */
+    padding: 0 40px 0 55px; 
+    text-indent: 0; /* Reset de la variable précédente */
+  }
+
+  /* 2. Ajustement spécifique pour le TOUT PREMIER chevron (bord gauche plat) */
+  .piliers-container .chevron-pilier:first-child {
+    margin-left: 0;
+    clip-path: polygon(0% 0%, 85% 0%, 100% 50%, 85% 100%, 0% 100%);
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    z-index: 3;
+    
+    /* Comme il n'y a pas d'encoche à gauche, on équilibre différemment pour centrer */
+    padding: 0 45px 0 25px; 
+  }
+  
+  .piliers-container .chevron-pilier:nth-child(2) { z-index: 2; }
+  .piliers-container .chevron-pilier:nth-child(3) { z-index: 1; }
+
+  .chevron-pilier span {
+    position: relative;
+    z-index: 2;
+    line-height: 1.4;
+  }
+
+  .chevron-pilier:hover {
+    transform: scale(1.08) translateY(-5px);
+    z-index: 100 !important;
+    filter: brightness(1.2) drop-shadow(0 10px 20px rgba(255, 167, 38, 0.4));
+    opacity: 1 !important;
+  }
+
+  .piliers-container:hover .chevron-pilier:not(:hover) {
+    transform: scale(0.95);
+    opacity: 0.4;
+  }
+
+/* --- STYLE DE LA SECTION EXPÉRIENCE --- */
+  .exp-bloc {
+    background: rgba(255, 255, 255, 0.03);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 167, 38, 0.05);
+    transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  }
+
+  .exp-bloc:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 167, 38, 0.2);
+  }
+
+  </style>
+
+</head>
+<body>
+  <body>
+<!-- La voie lactée orange en arrière-plan -->
+  <div class="voie-lactee"></div>
+
+  <!-- Reste de ta barre latérale (sidebar) ici... -->
+
+  <div class="sidebar">
+    <div class="sidebar-top">
+      <h3>Raphaël Pinel</h3>
+      <p>Mon Portfolio</p>
+      
+      <div class="sidebar-menu">
+        <a href="projet-1.html" class="sidebar-link">📁 BEMA : EcolCafé VR</a>
+        <a href="projet-2.html" class="sidebar-link">📁 Sky Legends - An Aeropostal Epic</a>
+        <a href="mon-cv.pdf" target="_blank" class="sidebar-link btn-pdf"><i class="fa-regular fa-file-pdf"></i> Télécharger le CV</a>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="mailto:r.pinel.mailpro@gmail.com" class="icon-link" title="Me contacter par mail">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/raphaël-pinel-617171313" target="_blank" class="icon-link" title="Mon profil LinkedIn">
+        <i class="fa-brands fa-linkedin"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="main-content">
+
+    <header>
+      <div style="position: relative; z-index: 10;">
+        
+        <div class="name-wrapper" style="display: inline-block; cursor: pointer;">
+          <h1 style="margin: 0; transition: color 0.3s, transform 0.3s;" onmouseover="this.style.color='#ffa726'; this.style.transform='scale(1.05)'" onmouseout="this.style.color='#f0f0f0'; this.style.transform='scale(1)'">
+            Pinel Raphaël
+          </h1>
+        </div>
+
+        <div class="fullscreen-bg-projects">
+          <div class="bg-col img-col-1" style="background-image: url('EcolCafeBEMA.png');"></div>
+          
+          <div class="bg-col img-col-2" style="background-image: url('Packshot-SkyLegends-Portrait.png');"></div>
+        </div>
+
+        <p style="margin-top: 15px;">Game / Level / Interaction Designer</p>
+        <a href="#contact" class="btn">Me contacter</a>
+      </div>
+    </header>
+
+    <section id="a-propos" style="display: flex; flex-wrap: wrap; gap: 60px; align-items: center; padding: 100px 20px; max-width: 1100px; margin: auto;">
+    
+    <div class="photos-container">
+      
+      <img src="IMG_1919.jpeg" alt="En plein travail" class="about-img img-gauche">
+      
+      <img src="PhotoID.jpg" alt="Portrait" class="about-img img-droite">
+      
+    </div>
+    
+    <!-- BLOC DE TEXTE (À DROITE) -->
+    <div class="text-container" style="flex: 1.3; min-width: 320px; display: flex; flex-direction: column; gap: 25px;">
+      
+      <!-- Titre aligné avec le texte -->
+      <h2 style="font-size: 2.8rem; margin: 0; color: #ffa726; font-family: 'Georgia', serif;">À propos de moi</h2>
+      
+      <!-- Paragraphes du Game Designer -->
+      <div style="font-size: 1.15rem; line-height: 1.7; color: #ccc; display: flex; flex-direction: column; gap: 20px;">
+        <p style="margin: 0;">
+          J'ai grandi avec les jeux-vidéos grâce à mon père. Cela m'aide à savoir ce qui plairait à un joueur casual comme lui ou un hardcore comme moi.
+        </p>
+        <p style="margin: 0;">
+          J'aime conceptualiser des mécaniques de gameplay qui provoqueront l'implication naturelle du joueur dans le jeu.
+        </p>
+        <p style="margin: 0; font-style: italic; color: #f0f0f0;">
+          Pour moi le temps du joueur est très important. <br>
+          <span style="color: #ffa726;">" Comment éviter qu'il perde son temps ? Comment lui donner cette sensation de progresser tout le temps ? "</span>
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+<!-- SECTION CE QUE J'APPORTE AU PROJET -->
+  <section id="ce-que-j-apporte" style="padding: 80px 20px; max-width: 1100px; margin: auto;">
+    
+    <!-- Titre principal centré en haut -->
+    <h2 style="font-size: 2.8rem; text-align: center; margin-bottom: 50px; color: #ffa726; font-family: 'Georgia', serif;">
+      Ce que j'apporte au projet
+    </h2>
+    
+    <!-- Conteneur sur deux colonnes (Photo + Contenu) -->
+    <div style="display: flex; flex-wrap: wrap; gap: 60px; align-items: flex-start;">
+      
+      <!-- Colonne de gauche : La Photo (Profil bureau) -->
+      <div style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
+        <img src="IMG_1924.jpeg" alt="En plein travail" style="width: 100%; max-width: 380px; height: auto; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 20px; border: 2px solid #021112; box-shadow: 5px 10px 30px rgba(0,0,0,0.5);">
+      </div>
+      
+      <!-- Colonne de droite : Les forces clés -->
+      <div style="flex: 1.5; min-width: 320px; color: #ccc; font-size: 1.1rem; line-height: 1.6;">
+        
+        <p style="font-weight: bold; font-size: 1.2rem; color: #f0f0f0; margin-top: 0; margin-bottom: 25px;">
+          Mes forces clés sont :
+        </p>
+        
+        <!-- Liste des compétences -->
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 30px;">
+          
+          <!-- Force 1 -->
+          <li>
+            <strong style="color: #ffa726; font-size: 1.2rem; display: block; margin-bottom: 8px;">
+              • Sensibilité à l'expérience utilisateur :
+            </strong>
+            <span style="color: #ccc;">
+              J'analyse la manière dont les joueurs interagissent avec les mécaniques afin d'identifier rapidement les points de friction. Mon objectif est de concevoir des expériences intuitives, où les décisions du joueur sont claires et satisfaisantes.
+            </span>
+          </li>
+          
+          <!-- Force 2 -->
+          <li>
+            <strong style="color: #ffa726; font-size: 1.2rem; display: block; margin-bottom: 8px;">
+              • Conception et prototypage de mécaniques immersives :
+            </strong>
+            <span style="color: #ccc;">
+              Je suis capable d'imaginer, structurer et tester des mécaniques qui renforcent l'engagement et l'immersion. Grâce au prototypage rapide, je peux itérer efficacement, valider des idées et ajuster les interactions pour garantir une expérience cohérente et captivante dès les premières phases de développement.
+            </span>
+          </li>
+          
+          <!-- Force 3 -->
+          <li>
+            <strong style="color: #ffa726; font-size: 1.2rem; display: block; margin-bottom: 8px;">
+              • Recherche constante de polish :
+            </strong>
+            <span style="color: #ccc;">
+              Je suis attentif aux détails et attaché à la qualité perçue du produit final. Cela se traduit par une volonté d'améliorer en continu les interactions, les feedbacks visuels et sonores, et l'équilibrage global, afin d'offrir une expérience aboutie, cohérente et agréable à utiliser.
+            </span>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION COMPÉTENCES ET OUTILS (3 COLONNES) -->
+  <section id="competences-skills" style="padding: 60px 20px 100px 20px; max-width: 1100px; margin: auto;">
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+      
+      <!-- Colonne 1 : Mes compétences principales -->
+      <div style="flex: 1; min-width: 280px;">
+        <h3 style="font-size: 1.3rem; color: #ffa726; margin-top: 0; margin-bottom: 20px; font-family: 'Georgia', serif;">
+          Mes compétences principales :
+        </h3>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; color: #ccc; font-size: 1.1rem;">
+          <li>• Core mechanics</li>
+          <li>• Expérience utilisateur (UX)</li>
+          <li>• Systèmes de puzzles</li>
+          <li>• Systems design</li>
+          <li>• Design en réalité virtuelle (VR)</li>
+        </ul>
+      </div>
+
+      <!-- Colonne 2 : Outils que j'utilise régulièrement -->
+      <div style="flex: 1; min-width: 280px;">
+        <h3 style="font-size: 1.3rem; color: #ffa726; margin-top: 0; margin-bottom: 20px; font-family: 'Georgia', serif;">
+          Outils que j’utilise régulièrement :
+        </h3>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; color: #ccc; font-size: 1.1rem;">
+          <li>• Unity</li>
+          <li>• Outils bureautiques (Google Docs, Sheets / Word, Excel)</li>
+          <li>• Photoshop</li>
+        </ul>
+      </div>
+
+      <!-- Colonne 3 : Soft skills -->
+      <div style="flex: 1; min-width: 280px;">
+        <h3 style="font-size: 1.3rem; color: #ffa726; margin-top: 0; margin-bottom: 20px; font-family: 'Georgia', serif;">
+          Soft skills
+        </h3>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; color: #ccc; font-size: 1.1rem;">
+          <li>• Analyse et résolution de problèmes</li>
+          <li>• Adaptabilité</li>
+          <li>• Travail en équipe</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+    <section>
+      <h2>Projets</h2>
+      <div class="projects">
+        <div class="card">
+          <h3>BEMA : EcolCafé VR</h3>
+          <p>Une phrase courte et percutante qui résume le défi.</p>
+          <a href="projet-1.html" class="btn-projet">Découvrir le projet →</a>
+        </div>
+
+        <div class="card">
+          <h3>Sky Legends - An Aeropostal Epic</h3>
+          <p>Une description rapide pour donner envie de cliquer.</p>
+          <a href="projet-2.html" class="btn-projet">Découvrir le projet →</a>
+        </div>
+
+      
+      </div>
+    </section>
+
+    <!-- SECTION VISION DU DESIGN -->
+  <section id="vision-design" style="padding: 90px 20px; max-width: 1000px; margin: auto;">
+  
+  <h2 style="font-size: 2.8rem; text-align: center; margin-bottom: 50px; color: #ffa726; font-family: 'Georgia', serif;">
+    Vision du Design
+  </h2>
+  
+  <div class="piliers-container">
+    <div class="chevron-pilier">
+      <span>Le Design au service du Brief</span>
+    </div>
+    <div class="chevron-pilier">
+      <span>Le respect du temps du joueur</span>
+    </div>
+    <div class="chevron-pilier">
+      <span>Rythme et Progression organique</span>
+    </div>
+  </div>
+
+</section>
+
+    <!-- Les Descriptions Détaillées -->
+    <div style="max-width: 800px; margin: 40px auto 0 auto; color: #ccc; font-size: 1.1rem; line-height: 1.7; display: flex; flex-direction: column; gap: 30px;">
+      
+      <!-- Point 1 -->
+      <div>
+        <h3 style="color: #ffa726; font-size: 1.25rem; margin: 0 0 8px 0; font-weight: bold;">
+          • Le Design au service du Brief
+        </h3>
+        <p style="margin: 0; padding-left: 20px; font-style: italic; color: #b0bfc1;">
+          "Qu’il s’agisse d’une page blanche ou d’une demande spécifique (bestiaire imposé, contraintes de lieu), ma priorité est de répondre aux objectifs du projet. Je conçois mes niveaux en faisant pivoter l’expérience autour des spécificités demandées pour en extraire le maximum de potentiel ludique."
+        </p>
+      </div>
+
+      <!-- Point 2 -->
+      <div>
+        <h3 style="color: #ffa726; font-size: 1.25rem; margin: 0 0 8px 0; font-weight: bold;">
+          • Le respect du temps du joueur
+        </h3>
+        <p style="margin: 0; padding-left: 20px; font-style: italic; color: #b0bfc1;">
+          "Chaque minute de jeu doit avoir une valeur. Je traque activement les temps morts, le backtracking inutile et les déséquilibres frustrants (hitbox imprécises, difficulté injuste). Mon but est de proposer un challenge millimétré où l’échec est un apprentissage, jamais une punition technique."
+        </p>
+      </div>
+
+      <!-- Point 3 -->
+      <div>
+        <h3 style="color: #ffa726; font-size: 1.25rem; margin: 0 0 8px 0; font-weight: bold;">
+          • Rythme et Progression organique
+        </h3>
+        <p style="margin: 0; padding-left: 20px; font-style: italic; color: #b0bfc1;">
+          "J'adapte le curseur de difficulté selon la maturité du joueur dans son parcours. En variant les situations de jeu et en proposant des choix de navigation (même factices), je m'assure que le sentiment de progression reste gratifiant et que le rythme évite toute répétition."
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="mon-experience" style="padding: 90px 20px; max-width: 1000px; margin: auto; text-align: center;">
+  
+  <h2 style="font-size: 2.8rem; margin-bottom: 50px; color: #ffa726; font-family: 'Georgia', serif;">
+    Mon expérience
+  </h2>
+  
+  <div class="experience-container" style="max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 45px;">
+    
+    <div class="exp-bloc">
+      <h3 style="color: #ffa726; font-size: 1.5rem; margin: 0 0 15px 0; font-family: 'Georgia', serif; font-weight: normal;">
+        Formation
+      </h3>
+      <p style="margin: 0 0 8px 0; color: #ffffff; font-size: 1.1rem; line-height: 1.6;">
+        <strong>CREASUP Digital</strong> — Mastère en Game Design <span style="color: #b0bfc1; font-style: italic;">(Cursus en 5 ans)</span>
+      </p>
+    </div>
+
+    <div class="exp-bloc">
+      <h3 style="color: #ffa726; font-size: 1.5rem; margin: 0 0 15px 0; font-family: 'Georgia', serif; font-weight: normal;">
+        Projets
+      </h3>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <li style="color: #ffffff; font-size: 1.1rem;">
+          • <strong style="color: #ffa726;">Sky Legends - An Aeropostal Epic</strong> — Game / Level Designer
+        </li>
+        <li style="color: #ffffff; font-size: 1.1rem;">
+          • <strong style="color: #ffa726;">Ecol'Café VR</strong> — Interaction / UX Designer
+        </li>
+      </ul>
+    </div>
+
+    <div class="exp-bloc">
+      <h3 style="color: #ffa726; font-size: 1.5rem; margin: 0 0 15px 0; font-family: 'Georgia', serif; font-weight: normal;">
+        Langues
+      </h3>
+      <ul style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; align-items: center;">
+        <li style="color: #ffffff; font-size: 1.1rem;">
+          • Français — langue native
+        </li>
+        <li style="color: #ffffff; font-size: 1.1rem;">
+          • Anglais — niveau C1<span style="color: #b0bfc1; font-style: italic;"> (courant professionnel)</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+  <section id="contact" style="text-align: center; padding: 40px 20px;">
+    <h2>Contact</h2>
+    <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; margin-top: 20px;">
+      
+      <a href="mailto:email@email.com" style="color: #aaa; text-decoration: none; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; transition: 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#aaa'">
+        <i class="fa-solid fa-envelope" style="font-size: 1.5rem;"></i> r.pinel.mailpro@gmail.com
+      </a>
+      
+      <a href="https://www.linkedin.com/in/raphaël-pinel-617171313" target="_blank" style="color: #aaa; text-decoration: none; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; transition: 0.3s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#aaa'">
+        <i class="fa-brands fa-linkedin" style="font-size: 1.5rem;"></i> Mon Profil LinkedIn
+      </a>
+
+    </div>
+  </section>
+
+    <footer>
+      © 2026 Pinel Raphaël
+    </footer>
+
+  </div>
+
+</body>
+</html>
