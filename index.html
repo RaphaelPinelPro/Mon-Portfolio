@@ -601,44 +601,47 @@
     /* --- COMPORTEMENT DES IMAGES DE FOND SUR TÉLÉPHONE --- */
 @media (max-width: 768px) {
   
-  /* 1. On force le conteneur à s'afficher TOUT LE TEMPS sur mobile */
-  .fullscreen-bg-projects {
+  /* 1. On remet invisible par défaut + ON COUPE LE GLISSEMENT PC */
+  .bg-col {
+    opacity: 0 !important;
+    transform: none !important;        /* Désactive le translateY(20px) du PC */
+    transition: opacity 0.3s ease !important; /* On ne garde QUE la transition d'opacité, pas de transform */
+    
+    flex: none !important;
+    width: 100% !important;
+    height: 49% !important;
+    background-size: cover !important;
+    background-position: center !important;
+  }
+
+  /* 2. Au clic/toucher : On cadre le conteneur proprement sur l'écran */
+  .name-wrapper:hover ~ .fullscreen-bg-projects,
+  .name-wrapper:active ~ .fullscreen-bg-projects {
     display: flex !important;
-    flex-direction: column !important; /* L'une au-dessus de l'autre */
-    position: absolute !important;     /* Reste ancré en haut de la page */
+    flex-direction: column !important; 
+    position: fixed !important; /* Reste calé sur l'écran du téléphone */
     top: 0 !important;
     left: 0 !important;
-    width: 100vw !important;           /* Largeur de l'écran */
-    height: 100vh !important;          /* Hauteur du header */
+    width: 100vw !important;           
+    height: 100vh !important;          
     margin: 0 !important;
     padding: 0 !important;
-    z-index: -1 !important;            /* Reste derrière le texte */
-    pointer-events: none !important;   /* N'interfère pas avec les clics sur l'écran */
+    z-index: -1 !important;
   }
 
-  /* 2. Image 1 : Visible en permanence à 0.3 en haut */
-  .img-col-1 {
-    opacity: 0.3 !important; 
-    flex: none !important;
-    width: 100% !important;
-    height: 49% !important;
-    background-size: cover !important;
-    background-position: center !important;
-    transform: none !important; /* Plus aucun mouvement/saut possible */
-    transition: none !important;
+  /* 3. Au clic : Image 1 apparaît à 0.3 sans bouger */
+  .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-1,
+  .name-wrapper:active ~ .fullscreen-bg-projects .img-col-1 {
+    opacity: 0.3 !important;
+    transform: none !important; /* Sécurité : force le blocage du mouvement */
   }
 
-  /* 3. Image 2 : Visible en permanence à 0.3 juste en dessous */
-  .img-col-2 {
-    opacity: 0.3 !important; 
-    flex: none !important;
-    width: 100% !important;
-    height: 49% !important;
-    margin-top: 10px !important; /* Ton petit espacement */
-    background-size: cover !important;
-    background-position: center !important;
-    transform: none !important; 
-    transition: none !important;
+  /* 4. Au clic : Image 2 apparaît à 0.3 juste en dessous sans bouger */
+  .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-2,
+  .name-wrapper:active ~ .fullscreen-bg-projects .img-col-2 {
+    opacity: 0.3 !important;
+    margin-top: 10px !important; 
+    transform: none !important; /* Sécurité : force le blocage du mouvement */
     border: none !important;     
   }
 }
