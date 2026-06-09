@@ -601,35 +601,35 @@
     /* --- COMPORTEMENT DES IMAGES DE FOND SUR TÉLÉPHONE --- */
 @media (max-width: 768px) {
   
-  /* On force le conteneur à se caler PILE sur les quatre coins de l'écran */
+  /* On dit au conteneur de ranger les images l'une au-dessus de l'autre */
   .fullscreen-bg-projects {
-    flex-direction: column !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important; 
   }
 
-  /* Chaque image prend 100% de la largeur et 50% exacte de la hauteur */
-  .bg-col {
+  /* Image 1 : Collée au haut de l'écran */
+  .img-col-1 {
     flex: none !important;
-    width: 100% !important;  
-    height: 50% !important;  
-    
-    /* IMPORTANT : On annule le décalage de 20px vers le bas qui fait couper l'image 2 */
-    transform: none !important; 
-    
-    /* On force l'image à se recentrer sans déborder */
-    background-size: cover !important;
-    background-position: center !important;
+    height: 48% !important; /* Prend un peu moins de la moitié pour laisser de la place au vide */
+    transform: none !important; /* Supprime le décalage PC */
   }
 
-  /* On retire proprement les bordures PC */
+  /* Image 2 : Collée sous l'image 1 avec un petit espacement */
   .img-col-2 {
+    flex: none !important;
+    height: 48% !important;
+    margin-top: 10px !important; /* L'espacement de quelques pixels entre les deux images */
+    transform: none !important; /* Supprime le décalage PC qui l'envoyait tout en bas */
+    
+    /* On nettoie les bordures PC */
     border-left: none !important;
     border-right: none !important;
+  }
+
+  /* Rendu de l'image pour les deux */
+  .bg-col {
+    background-size: cover !important;
+    background-position: center !important;
   }
 }
   </style>
