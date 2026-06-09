@@ -548,7 +548,25 @@
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 167, 38, 0.2);
   }
+/* --- PASSAGE DES PROJETS EN MODE VERTICAL SUR MOBILE --- */
+@media (max-width: 768px) {
+  
+  /* On cible le conteneur global de tes projets */
+  .projects { 
+    flex-direction: column !important; /* Force l'empilement vertical (l'un au-dessus de l'autre) */
+    align-items: center !important;   /* Centre les éléments sur l'écran du téléphone */
+    gap: 30px !important;              /* Ajoute un espace propre entre chaque projet */
+    padding: 0 20px !important;        /* Évite que ça colle aux bords de l'écran */
+  }
 
+  /* On s'assure que chaque projet/image prend bien la largeur du téléphone */
+  .card, .projects img {
+    width: 100% !important;     /* Prend toute la largeur disponible */
+    max-width: 340px !important; /* Limite la taille pour que ce soit propre */
+    margin: 0 auto !important;
+  }
+}
+    
   </style>
 
 </head>
