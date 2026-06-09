@@ -601,48 +601,47 @@
     /* --- COMPORTEMENT DES IMAGES DE FOND SUR TÉLÉPHONE --- */
 @media (max-width: 768px) {
   
-  /* 1. On remet invisible par défaut + ON COUPE LE GLISSEMENT PC */
+  /* 1. État masqué par défaut */
   .bg-col {
     opacity: 0 !important;
-    transform: none !important;        /* Désactive le translateY(20px) du PC */
-    transition: opacity 0.3s ease !important; /* On ne garde QUE la transition d'opacité, pas de transform */
-    
     flex: none !important;
     width: 100% !important;
-    height: 49% !important;
+    height: 50% !important; /* On repasse sur une moitié exacte */
     background-size: cover !important;
     background-position: center !important;
+    transform: none !important; 
+    transition: opacity 0.5s ease !important;
   }
 
-  /* 2. Au clic/toucher : On cadre le conteneur proprement sur l'écran */
+  /* 2. Au clic : On ancre solidement le fond à la structure de la page, pas au téléphone */
   .name-wrapper:hover ~ .fullscreen-bg-projects,
   .name-wrapper:active ~ .fullscreen-bg-projects {
     display: flex !important;
-    flex-direction: column !important; 
-    position: fixed !important; /* Reste calé sur l'écran du téléphone */
+    flex-direction: column !important; /* L'une au-dessus de l'autre */
+    position: absolute !important;     /* ANCRAGE FIXE SUR LA PAGE : Règle le problème d'Opéra */
     top: 0 !important;
     left: 0 !important;
-    width: 100vw !important;           
-    height: 100vh !important;          
+    width: 100% !important;            /* Évite les débordements latéraux */
+    height: 100vh !important;          /* Se cale strictement sur la hauteur initiale du header */
     margin: 0 !important;
     padding: 0 !important;
     z-index: -1 !important;
+    overflow: hidden !important;
   }
 
-  /* 3. Au clic : Image 1 apparaît à 0.3 sans bouger */
+  /* 3. Au clic : Image 1 en haut avec opacité discrète à 0.3 */
   .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-1,
   .name-wrapper:active ~ .fullscreen-bg-projects .img-col-1 {
-    opacity: 0.3 !important;
-    transform: none !important; /* Sécurité : force le blocage du mouvement */
+    opacity: 0.3 !important; 
+    transform: none !important;
   }
 
-  /* 4. Au clic : Image 2 apparaît à 0.3 juste en dessous sans bouger */
+  /* 4. Au clic : Image 2 en bas avec opacité à 0.3 et jointure nette */
   .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-2,
   .name-wrapper:active ~ .fullscreen-bg-projects .img-col-2 {
-    opacity: 0.3 !important;
-    margin-top: 10px !important; 
-    transform: none !important; /* Sécurité : force le blocage du mouvement */
-    border: none !important;     
+    opacity: 0.3 !important; 
+    transform: none !important;
+    border: none !important; /* Supprime les bordures PC qui se décalaient */
   }
 }
   </style>
