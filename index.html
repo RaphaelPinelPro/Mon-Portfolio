@@ -601,7 +601,7 @@
     /* --- COMPORTEMENT DES IMAGES DE FOND SUR TÉLÉPHONE --- */
 @media (max-width: 768px) {
   
-  /* 1. On remet les images invisibles par défaut comme avant */
+  /* 1. Images invisibles par défaut */
   .bg-col {
     opacity: 0 !important;
     flex: none !important;
@@ -612,32 +612,33 @@
     transform: none !important; 
   }
 
-  /* 2. Au clic, on ancre le conteneur en ABSOLUTE au sommet du site */
+  /* 2. Au clic : Verrouillage absolu au pixel près pour éviter le saut au scroll */
   .name-wrapper:hover ~ .fullscreen-bg-projects,
   .name-wrapper:active ~ .fullscreen-bg-projects {
     display: flex !important;
     flex-direction: column !important; 
-    position: absolute !important;     /* Reste ancré au top sans réagir aux barres d'outils mobiles */
+    position: fixed !important; /* On repasse en fixed mais sécurisé avec svh */
     top: 0 !important;
     left: 0 !important;
     width: 100vw !important;           
-    height: 100vh !important;          
+    height: 100svh !important; /* 'svh' = Short Viewport Height (ignore les barres de navigation mobiles pour éviter le sursaut) */
     margin: 0 !important;
     padding: 0 !important;
     z-index: -1 !important;
+    overflow: hidden !important;
   }
 
-  /* 3. Au clic, image 1 en haut avec opacité réduite */
+  /* 3. Au clic : Image 1 passée à 0.3 */
   .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-1,
   .name-wrapper:active ~ .fullscreen-bg-projects .img-col-1 {
-    opacity: 0.7 !important; /* Ajusté à 0.7 pour laisser respirer ton nom */
+    opacity: 0.3 !important; /* Changé à 0.3 pour un effet sombre et classe */
     transform: none !important;
   }
 
-  /* 4. Au clic, image 2 juste en dessous avec espace et opacité réduite */
+  /* 4. Au clic : Image 2 passée à 0.3 avec espace */
   .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-2,
   .name-wrapper:active ~ .fullscreen-bg-projects .img-col-2 {
-    opacity: 0.7 !important; /* Ajusté à 0.7 aussi */
+    opacity: 0.3 !important; /* Changé à 0.3 aussi */
     margin-top: 10px !important; 
     transform: none !important;
     border: none !important;     
