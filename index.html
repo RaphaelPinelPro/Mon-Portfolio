@@ -548,6 +548,28 @@
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 167, 38, 0.2);
   }
+    /* --- ADAPTATION DES IMAGES DE FOND POUR LE TÉLÉPHONE --- */
+@media (max-width: 768px) {
+  
+  header {
+    /* Sur téléphone, les navigateurs (Opéra, Safari...) gèrent mal le 100vh à cause de la barre d'adresse qui monte et descend. On sécurise avec 100min-html */
+    height: 100vh; 
+    overflow: hidden; /* Empêche l'image de faire apparaître des barres de défilement sur les côtés */
+  }
+
+  /* ICI : Remplace ".classe-de-tes-images" par le sélecteur exact de tes images de fond */
+  .classe-de-tes-images {
+    width: 100% !important;
+    height: 100% !important;
+    
+    /* LA PROPRIÉTÉ MAGIQUE : */
+    object-fit: cover !important; 
+    
+    /* 'cover' force l'image à se redimensionner et se recadrer automatiquement pour remplir tout l'écran du téléphone sans jamais se déformer ni déborder sur les côtés */
+    
+    object-position: center !important; /* Garde le centre de ton image bien au milieu de l'écran mobile */
+  }
+}
   </style>
 
 </head>
