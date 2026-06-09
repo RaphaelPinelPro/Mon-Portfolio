@@ -601,44 +601,46 @@
     /* --- COMPORTEMENT DES IMAGES DE FOND SUR TÉLÉPHONE --- */
 @media (max-width: 768px) {
   
-  /* On force le conteneur à se caler PILE sur les 4 bords du téléphone */
-  .fullscreen-bg-projects {
-    display: flex !important;
-    flex-direction: column !important; /* L'une au-dessus de l'autre */
-    position: absolute !important;     /* Sort du flux pour ne pas pousser ton nom */
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;           /* Aligné pile sur la largeur de l'écran */
-    height: 100vh !important;          /* Aligné pile sur la hauteur de l'écran */
-    margin: 0 !important;
-    padding: 0 !important;
-    z-index: -1 !important;            /* Force les images à passer DERRIÈRE le texte */
-    overflow: hidden !important;       /* Coupe tout ce qui dépasse à droite ou en bas */
-  }
-
-  /* Image 1 (EcolCafeBEMA) : Collée en haut */
-  .img-col-1 {
-    flex: none !important;
-    width: 100% !important;
-    height: 49% !important;            /* Presque la moitié de l'écran */
-    transform: none !important;        /* Supprime les décalages du PC */
-  }
-
-  /* Image 2 (SkyLegends) : Collée juste en dessous de l'image 1 */
-  .img-col-2 {
-    flex: none !important;
-    width: 100% !important;
-    height: 49% !important;            /* Presque la moitié de l'écran */
-    margin-top: 2% !important;         /* L'espacement de quelques pixels entre les deux */
-    transform: none !important;        /* Supprime les décalages du PC */
-    border: none !important;           /* Enlève les bordures noires PC */
-  }
-
-  /* Rendu global pour étirer les images proprement sans déformer */
+  /* 1. On remet les images invisibles par défaut comme avant */
   .bg-col {
+    opacity: 0 !important;
+    flex: none !important;
+    width: 100% !important;
+    height: 49% !important;
     background-size: cover !important;
     background-position: center !important;
-    opacity: 1 !important;             /* Optionnel : ajuste si tu veux qu'elles soient visibles direct sur mobile */
+    transform: none !important; /* Annule le translate PC qui descend les images */
+  }
+
+  /* 2. Quand on clique sur ton nom, on force le conteneur à se caler PILE sur l'écran */
+  .name-wrapper:hover ~ .fullscreen-bg-projects,
+  .name-wrapper:active ~ .fullscreen-bg-projects {
+    display: flex !important;
+    flex-direction: column !important; /* L'une au-dessus de l'autre */
+    position: fixed !important;        /* Reste calé par rapport à l'écran du téléphone */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;           /* Largeur exacte de l'écran */
+    height: 100vh !important;          /* Hauteur exacte de l'écran */
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: -1 !important;
+  }
+
+  /* 3. Au clic, on affiche l'image 1 en haut */
+  .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-1,
+  .name-wrapper:active ~ .fullscreen-bg-projects .img-col-1 {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* 4. Au clic, on affiche l'image 2 juste en dessous avec l'espace */
+  .name-wrapper:hover ~ .fullscreen-bg-projects .img-col-2,
+  .name-wrapper:active ~ .fullscreen-bg-projects .img-col-2 {
+    opacity: 1 !important;
+    margin-top: 10px !important; /* Ton petit espacement */
+    transform: none !important;
+    border: none !important;     /* Enlève les bordures PC */
   }
 }
   </style>
