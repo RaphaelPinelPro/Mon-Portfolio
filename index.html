@@ -548,26 +548,54 @@
     background: rgba(255, 255, 255, 0.06);
     border-color: rgba(255, 167, 38, 0.2);
   }
-    /* --- ADAPTATION DES IMAGES DE FOND POUR LE TÉLÉPHONE --- */
 @media (max-width: 768px) {
   
-  header {
-    /* Sur téléphone, les navigateurs (Opéra, Safari...) gèrent mal le 100vh à cause de la barre d'adresse qui monte et descend. On sécurise avec 100min-html */
-    height: 100vh; 
-    overflow: hidden; /* Empêche l'image de faire apparaître des barres de défilement sur les côtés */
+  /* 1. ANATOMIE DU FOND : On empile les deux images l'une sur l'autre */
+  .fullscreen-bg-projects {
+    display: flex !important;
+    flex-direction: column !important; /* Téléphone = l'une au-dessus de l'autre */
+    height: 100vh !important;
+    width: 100vw !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    overflow: hidden;
   }
 
-  /* ICI : Remplace ".classe-de-tes-images" par le sélecteur exact de tes images de fond */
-  .classe-de-tes-images {
+  /* Chaque image prend toute la largeur et 50% de la hauteur de l'écran */
+  .bg-col {
+    width: 100% !important;  
+    height: 50% !important;  
+    background-size: cover !important;       /* Recadre sans déformer ni déborder */
+    background-position: center !important;   /* Reste bien centrée au milieu */
+    background-repeat: no-repeat !important;
+  }
+
+  /* 2. ANATOMIE DES CHEVRONS : On les empile proprement verticalement */
+  .piliers-container {
+    flex-direction: column !important; 
+    gap: 20px !important;
+    padding: 0 10px !important;
+  }
+
+  .chevron-pilier {
     width: 100% !important;
-    height: 100% !important;
-    
-    /* LA PROPRIÉTÉ MAGIQUE : */
-    object-fit: cover !important; 
-    
-    /* 'cover' force l'image à se redimensionner et se recadrer automatiquement pour remplir tout l'écran du téléphone sans jamais se déformer ni déborder sur les côtés */
-    
-    object-position: center !important; /* Garde le centre de ton image bien au milieu de l'écran mobile */
+    max-width: 320px !important;
+    margin-left: 0 !important;
+    clip-path: none !important; /* Devient un rectangle propre plus lisible sur mobile */
+    border-radius: 12px !important;
+    padding: 20px !important;
+    height: auto !important;
+    min-height: 80px !important;
+    text-indent: 0 !important; /* Reset du décalage de texte PC */
+  }
+
+  /* Ajustement pour le premier bloc */
+  .piliers-container .chevron-pilier:first-child {
+    padding: 20px !important;
+    border-radius: 12px !important;
+    text-indent: 0 !important;
   }
 }
   </style>
