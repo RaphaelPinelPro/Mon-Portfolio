@@ -601,35 +601,44 @@
     /* --- COMPORTEMENT DES IMAGES DE FOND SUR TÉLÉPHONE --- */
 @media (max-width: 768px) {
   
-  /* On dit au conteneur de ranger les images l'une au-dessus de l'autre */
+  /* On force le conteneur à se caler PILE sur les 4 bords du téléphone */
   .fullscreen-bg-projects {
     display: flex !important;
-    flex-direction: column !important; 
+    flex-direction: column !important; /* L'une au-dessus de l'autre */
+    position: absolute !important;     /* Sort du flux pour ne pas pousser ton nom */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;           /* Aligné pile sur la largeur de l'écran */
+    height: 100vh !important;          /* Aligné pile sur la hauteur de l'écran */
+    margin: 0 !important;
+    padding: 0 !important;
+    z-index: -1 !important;            /* Force les images à passer DERRIÈRE le texte */
+    overflow: hidden !important;       /* Coupe tout ce qui dépasse à droite ou en bas */
   }
 
-  /* Image 1 : Collée au haut de l'écran */
+  /* Image 1 (EcolCafeBEMA) : Collée en haut */
   .img-col-1 {
     flex: none !important;
-    height: 48% !important; /* Prend un peu moins de la moitié pour laisser de la place au vide */
-    transform: none !important; /* Supprime le décalage PC */
+    width: 100% !important;
+    height: 49% !important;            /* Presque la moitié de l'écran */
+    transform: none !important;        /* Supprime les décalages du PC */
   }
 
-  /* Image 2 : Collée sous l'image 1 avec un petit espacement */
+  /* Image 2 (SkyLegends) : Collée juste en dessous de l'image 1 */
   .img-col-2 {
     flex: none !important;
-    height: 48% !important;
-    margin-top: 10px !important; /* L'espacement de quelques pixels entre les deux images */
-    transform: none !important; /* Supprime le décalage PC qui l'envoyait tout en bas */
-    
-    /* On nettoie les bordures PC */
-    border-left: none !important;
-    border-right: none !important;
+    width: 100% !important;
+    height: 49% !important;            /* Presque la moitié de l'écran */
+    margin-top: 2% !important;         /* L'espacement de quelques pixels entre les deux */
+    transform: none !important;        /* Supprime les décalages du PC */
+    border: none !important;           /* Enlève les bordures noires PC */
   }
 
-  /* Rendu de l'image pour les deux */
+  /* Rendu global pour étirer les images proprement sans déformer */
   .bg-col {
     background-size: cover !important;
     background-position: center !important;
+    opacity: 1 !important;             /* Optionnel : ajuste si tu veux qu'elles soient visibles direct sur mobile */
   }
 }
   </style>
