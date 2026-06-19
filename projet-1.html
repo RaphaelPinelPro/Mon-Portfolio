@@ -3,61 +3,228 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Projet 1 - Détails</title>
+  <title>Ecol'Café VR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
   <style>
+    /* --- FOND ET AMBIANCE GLOBALE --- */
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: white;
+      font-family: 'Inter', sans-serif;
+      color: #f0f0f0;
+      overflow-x: hidden;
       line-height: 1.6;
+      background: linear-gradient(135deg, #063135 0%, #0a4b51 50%, #042326 100%);
+      background-attachment: fixed;
+      padding-top: 40px;
     }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(rgba(255, 167, 38, 0.15) 1.5px, transparent 0);
+      background-size: 50px 50px;
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .voie-lactee {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      width: 140%;
+      height: 180px;
+      background: radial-gradient(ellipse at center, rgba(255, 145, 0, 0.18) 0%, rgba(255, 100, 0, 0.05) 40%, transparent 70%);
+      filter: blur(40px);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .voie-lactee::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(rgba(255, 200, 100, 0.4) 1px, transparent 0);
+      background-size: 15px 15px;
+      mask-image: linear-gradient(to bottom, transparent, black, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black, transparent);
+    }
+
+    /* --- STRUCTURE CONTENEUR GENERAL --- */
     .container {
-      max-width: 800px;
+      max-width: 1500px;
       margin: auto;
-      padding: 60px 20px;
+      padding: 40px 60px;
+      box-sizing: border-box;
     }
+
+    /* --- LAYOUT EN 2 COLONNES (HAUT DE PAGE) --- */
+    .project-layout {
+      display: flex;
+      gap: 60px;
+      align-items: flex-start;
+      margin-bottom: 60px;
+    }
+
+    .main-content {
+      flex: 1.2;
+    }
+
+    .sidebar-media {
+      flex: 1;
+      /* On a retiré le position: sticky pour que l'image ne suive plus le scroll */
+    }
+
+    .project-poster {
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      display: block;
+    }
+
+    /* --- TEXTES, TITRES ET LISTES --- */
+    .project-title {
+      font-size: 3.5rem;
+      color: #ffffff;
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: 40px;
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+    }
+
+    .simple-text-block {
+      margin-bottom: 35px;
+    }
+
+    .simple-text-block h2 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-top: 0;
+      margin-bottom: 12px;
+    }
+
+    .simple-text-block p {
+      font-size: 1.05rem;
+      color: #cccccc;
+      margin: 0;
+    }
+
+    .simple-list {
+      padding-left: 20px;
+      margin-top: 10px;
+      margin-bottom: 0;
+    }
+
+    .simple-list li {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: #cccccc;
+      margin-bottom: 10px;
+    }
+
+    /* --- GALERIE DU BAS (3 IMAGES COMPACTES) --- */
+    .project-gallery {
+      display: flex;
+      gap: 60px;
+      max-width: 1200px;
+      margin: 60px auto;
+      width: 100%;
+    }
+
+    .gallery-item {
+      flex: 1;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+      display: block;
+    }
+
+    /* --- LIEN RETOUR DISCRET (STYLE D'ORIGINE) --- */
     .back-link {
       color: #aaa;
       text-decoration: none;
       font-size: 0.9rem;
+      transition: color 0.2s;
+      display: inline-block;
+      margin-bottom: 30px;
     }
-    .back-link:hover { color: white; }
-    h1 { font-size: 2.5rem; margin-top: 20px; margin-bottom: 5px; }
-    .meta { color: #777; font-size: 0.9rem; margin-bottom: 40px; }
-    h2 { margin-top: 40px; color: #fff; border-bottom: 1px solid #222; padding-bottom: 10px; }
-    p { color: #ccc; }
-    footer { text-align: center; padding: 40px; color: #777; margin-top: 60px; }
+    
+    .back-link:hover { 
+      color: #ff9f43; 
+    }
+
+    /* --- RESPONSIVE DESIGN --- */
+    @media (max-width: 900px) {
+      .project-layout, .project-gallery {
+        flex-direction: column;
+        gap: 30px;
+      }
+    }
   </style>
 </head>
+
 <body>
 
-  <div class="container">
-    <!-- Bouton pour retourner à l'accueil -->
+  <div class="voie-lactee"></div>
+
+  <main class="container">
+    
     <a href="index.html" class="back-link">← Retour à l'accueil</a>
+    
+    <div class="project-layout">
+      
+      <div class="main-content">
+        <h1 class="project-title">Ecol’Café VR</h1>
 
-    <h1>Nom du Projet 1</h1>
-    <div class="meta">Rôle : Développeur / Année : 2026 / Contexte : Projet d'études</div>
+        <div class="simple-text-block">
+          <h2>Une application d'apprentissage</h2>
+          <p>Cette application a pour but de mettre en situation des lycéens face à une ligne automatisée de production de capsules de café développée par l'entreprise BEMA.</p>
+        </div>
 
-    <section>
-      <h2>Le Brief / Le Problème</h2>
-      <p>Explique ici quelle était la demande initiale, le problème à résoudre ou l'objectif de ce projet. Pourquoi l'as-tu lancé ?</p>
+        <div class="simple-text-block">
+          <h2>Les problèmes rencontrés</h2>
+          <p>L'application est en VR sur un casque Meta Quest Pro et doit donc être réaliste afin de ne pas briser l'immersion. Elle est destinée à un public jeune et doit donc être accessible. De plus, elle doit être ludique afin de servir de support d'enseignement.</p>
+        </div>
+
+        <div class="simple-text-block">
+          <h2>Les solutions apportées</h2>
+          <ul class="simple-list">
+            <li>L'utilisateur est placé au centre d'une salle neutre dans laquelle il trouvera le nécessaire pour utiliser la machine.</li>
+            <li>Les interactions et les déplacements se font par clics à distance afin d'être accessibles et que l'utilisateur se concentre sur ses tâches.</li>
+            <li>Possibilité de visualiser les pièces importantes de la machine à part, avec des informations les concernant, comme leur utilité.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sidebar-media">
+        <img src="BEMAMachineAll.png" alt="Ligne automatisée globale" class="project-poster">
+      </div>
+
+    </div>
+
+    <section class="project-gallery">
+      <div class="gallery-item">
+        <img src="Module1.png" alt="Poste 1 - Remplissage" class="gallery-img">
+      </div>
+      <div class="gallery-item">
+        <img src="Module2.png" alt="Poste 2 - Conditionnement" class="gallery-img">
+      </div>
+      <div class="gallery-item">
+        <img src="Module3.png" alt="Poste 3 - Bras robotisé" class="gallery-img">
+      </div>
     </section>
 
-    <section>
-      <h2>Ma Solution</h2>
-      <p>Détaille ici ce que tu as fait spécifiquement. Quelle technologie, quels outils ou quelle approche as-tu choisis et pourquoi ? C'est ça qui intéresse le recruteur.</p>
-    </section>
-
-    <section>
-      <h2>Résultats & Apprentissages</h2>
-      <p>Qu'est-ce que ce projet t'a apporté ? Est-ce qu'il a atteint ses objectifs ? Qu'as-tu appris en le faisant ?</p>
-    </section>
-  </div>
-
-  <footer>
-    © 2026 Ton Nom
-  </footer>
+  </main>
 
 </body>
 </html>

@@ -4,57 +4,875 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sky Legends - An Aeropostal Epic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
   <style>
+    /* --- FOND ET AMBIANCE GLOBALE --- */
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f0f0f;
-      color: white;
+      font-family: 'Inter', sans-serif;
+      color: #f0f0f0;
+      overflow-x: hidden;
       line-height: 1.6;
+      background: linear-gradient(135deg, #063135 0%, #0a4b51 50%, #042326 100%);
+      background-attachment: fixed;
     }
+    
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(255, 167, 38, 0.15) 1.5px, transparent 0);
+      background-size: 50px 50px;
+      z-index: -2;
+      pointer-events: none;
+    }
+    
+
+    .voie-lactee {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-30deg);
+      width: 140%;
+      height: 180px;
+      background: radial-gradient(ellipse at center, rgba(255, 145, 0, 0.18) 0%, rgba(255, 100, 0, 0.05) 40%, transparent 70%);
+      filter: blur(40px);
+      z-index: -2;
+      pointer-events: none;
+    }
+
+    .voie-lactee::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: radial-gradient(rgba(255, 200, 100, 0.4) 1px, transparent 0);
+      background-size: 15px 15px;
+      mask-image: linear-gradient(to bottom, transparent, black, transparent);
+      -webkit-mask-image: linear-gradient(to bottom, transparent, black, transparent);
+    }
+
+/* --- STRUCTURE DE LA PAGE --- */
     .container {
-      max-width: 800px;
+      max-width: 1500px; /* Plus large pour faire tenir le texte et l'image côte à côte */
       margin: auto;
-      padding: 60px 20px;
+      padding: 40px 60px; /* J'ai mis 60px ici pour pousser le texte vers l'intérieur */
+      box-sizing: border-box; /* Sécurité pour éviter les bugs d'affichage */
     }
+
     .back-link {
       color: #aaa;
       text-decoration: none;
       font-size: 0.9rem;
+      transition: color 0.2s;
+      display: inline-block;
+      margin-bottom: 30px;
     }
-    .back-link:hover { color: white; }
-    h1 { font-size: 2.5rem; margin-top: 20px; margin-bottom: 5px; }
-    .meta { color: #777; font-size: 0.9rem; margin-bottom: 40px; }
-    h2 { margin-top: 40px; color: #fff; border-bottom: 1px solid #222; padding-bottom: 10px; }
-    p { color: #ccc; }
-    footer { text-align: center; padding: 40px; color: #777; margin-top: 60px; }
+    .back-link:hover { color: #ff9f43; }
+
+    /* --- LAYOUT EN 2 COLONNES --- */
+    .project-layout {
+      display: flex;
+      gap: 40px;
+      align-items: flex-start;
+    }
+
+    .main-content {
+      flex: 1; /* Prend l'espace à gauche */
+    }
+
+    .sidebar-media {
+      flex: 1; /* Prend l'espace à droite */
+      position: sticky;
+      top: 40px; /* L'image reste fixée à l'écran quand on scroll */
+      height: 850px; /* <--- Donne une hauteur fixe pour forcer l'espace à droite */
+    }
+
+.image-container-cascade {
+  position: relative; /* Indispensable pour que les "top" se basent sur ce carré et pas sur toute la page */
+  width: 100%;
+  height: 100%;
+}
+
+    /* --- GRANDE IMAGE DU JEU STYLISÉE --- */
+    .project-poster {
+      width: 100%;
+      height: auto;
+      border-radius: 16px; /* Bords arrondis comme sur ta maquette */
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5); /* Ombre portée sous l'image */
+      display: block;
+    }
+
+    /* --- TYPOGRAPHIE ET EN-TÊTE --- */
+    .project-header {
+      margin-bottom: 30px;
+    }
+    h1 { 
+      font-size: 3rem; 
+      font-weight: 800;  
+      letter-spacing: -1px;
+      margin: 0 0 5px 0;
+      line-height: 1.1;
+      background: linear-gradient(45deg, #fff, #bbb); 
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .subtitle {
+      font-size: 1.4rem;
+      color: #ff9f43; 
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .meta { 
+      color: #aaa; 
+      font-size: 0.9rem; 
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 12px 0;
+    }
+
+    h2 { margin-top: 40px; color: #fff; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px; font-weight: 600; font-size: 1.5rem;}
+    p { color: #ccc; font-size: 1.05rem; text-align: justify; }
+    footer { text-align: center; padding: 60px 40px 40px 40px; color: #777; clear: both; }
+
+    /* --- RESPONSIVE MOBILE : REPASSE EN 1 COLONNE SUR MOBILE --- */
+    @media (max-width: 900px) {
+      .project-layout {
+        flex-direction: column;
+      }
+      .sidebar-media {
+        position: static;
+        order: -1; /* Met l'image au-dessus du texte sur téléphone */
+      }
+      h1 { font-size: 2.2rem; }
+    }
+/* --- STYLE SECTION CHALLENGES (PROPRE ET NETTOYÉ) --- */
+.challenges-section {
+  margin-top: 60px;
+}
+
+.challenges-layout {
+  display: flex;
+  gap: 50px;
+  margin-top: 40px;
+  align-items: flex-start;
+}
+
+/* Galerie d'images en cascade (Gauche) - FIXÉ */
+.challenges-gallery {
+  flex: 1;
+  position: relative;
+  min-height: 1000px; /* <--- Augmenté pour contenir confortablement toute la pile */
+}
+
+/* --- Positionnement unique et stable de l'effet de pile - FIXÉ --- */
+.cascade-img {
+  position: absolute;
+  width: 75%; /* <--- Légèrement réduit pour donner de l'air face au texte */
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+  transition: transform 0.3s ease;
+}
+
+/* Des écarts en pixels réduits pour que la pile reste groupée, même au dézoom */
+.cascade-img.img-1 { top: 0;      left: 0;   z-index: 3; }
+.cascade-img.img-2 { top: 250px;  left: 20%; z-index: 2; }
+.cascade-img.img-3 { top: 500px;  left: 2%;  z-index: 1; }
+.cascade-img.img-4 { top: 750px;  left: 24%;  z-index: 0; }
+
+/* Conteneur de textes (Droite) */
+.challenges-text-container {
+  flex: 1.3;
+  padding-right: 5%; /* Ajoute une marge de sécurité à droite pour décoller du bord */
+}
+
+.challenge-block {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 25px 0;
+}
+
+/* Titres des défis */
+.challenge-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+
+/* Descriptions des défis */
+.challenge-description p {
+  font-size: 0.95rem;
+  color: #cccccc;
+  line-height: 1.6;
+  margin: 0 0 15px 0;
+  text-align: justify;
+}
+
+/* Titres "+ Solutions" */
+.solution-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ff9f43; /* Ton orange */
+  margin-bottom: 8px;
+}
+
+/* Contenu des solutions (avec le léger décalage à gauche) */
+.solution-description {
+  padding-left: 15px;
+}
+
+.solution-description p {
+  font-size: 0.95rem;
+  color: #b5b5b5;
+  line-height: 1.6;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Bloc de conclusion en bas */
+.challenge-footer-text {
+  margin-top: 30px;
+  padding-left: 15px; /* Même alignement que le retrait de tes solutions */
+}
+
+.challenge-footer-text p {
+  font-size: 0.95rem;
+  color: #b5b5b5;
+  line-height: 1.6;
+  text-align: justify;
+  margin: 0;
+}
+
+/* --- STYLE SECTION SYSTÈME DE LA CARTE --- */
+.map-system-section {
+  margin-top: 80px;
+}
+
+.section-main-header {
+  margin-bottom: 50px;
+}
+
+.project-mini-title {
+  font-size: 0.9rem;
+  color: #777; /* Petit texte gris du haut */
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Structure du Layout (2 colonnes) */
+.map-layout {
+  display: flex;
+  gap: 60px; /* Espace entre le texte et l'image */
+  align-items: flex-start;
+}
+
+/* Colonne gauche (Texte) */
+.map-text-content {
+  flex: 1.2;
+}
+
+.map-text-content h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+  font-weight: 600;
+}
+
+.map-text-content p {
+  font-size: 1.05rem;
+  color: #cccccc;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* Colonne droite (Image) */
+.map-media-sidebar {
+  flex: 1;
+}
+
+.map-poster {
+  width: 100%;
+  height: auto;
+  border-radius: 20px; /* Bords bien arrondis comme sur ta maquette */
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  display: block;
+}
+
+/* Responsive pour les écrans mobiles */
+@media (max-width: 900px) {
+  .map-layout {
+    flex-direction: column;
+  }
+  .map-media-sidebar {
+    order: -1; /* Met la carte au-dessus sur téléphone */
+  }
+}
+
+/* --- STYLE STYLE DETAILS ET MECANIQUES --- */
+.map-details-section {
+  margin-top: 60px;
+}
+
+/* Style spécifique pour la liste à puces */
+.design-list {
+  list-style-type: none; /* On enlève les puces moches par défaut */
+  padding-left: 15px;
+  margin-top: 20px;
+}
+
+.design-list li {
+  font-size: 1.05rem;
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+/* Ajout d'une puce customisée orange élégante devant chaque ligne */
+.design-list li::before {
+  content: "•";
+  color: #ff9f43; /* Ton orange */
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+/* Conteneur pour mettre les deux images verticales côte à côte */
+.double-images-container {
+  display: flex;
+  gap: 15px; /* Petit espace entre les deux morceaux de carte */
+  width: 100%;
+  max-width: 500px;
+}
+
+.map-sub-poster {
+  flex: 1;
+  width: 50%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Zone du bas (Mécaniques de Gameplay) */
+.gameplay-mechanics-header {
+  margin-top: 60px;
+}
+
+.gameplay-mechanics-header h3 {
+  color: #ff9f43; /* Ton orange pour le sous-titre A. */
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Responsive pour les petits écrans */
+@media (max-width: 900px) {
+  .double-images-container {
+    flex-direction: row; /* Garde les images côte à côte même sur mobile pour éviter qu'elles soient géantes */
+  }
+}
+
+/* --- SECTION MÉCANIQUES (STYLE GLOBAL) --- */
+.gameplay-mechanics-section {
+  margin-top: 80px;
+}
+
+.mechanics-header h2 {
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 40px;
+}
+
+.mechanics-block {
+  margin-bottom: 80px; /* Espace généreux entre les blocs A, B et C */
+}
+
+.mechanics-block h3 {
+  color: #ff9f43; /* Ton orange */
+  font-size: 1.4rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+}
+
+.mechanics-intro {
+  font-size: 1.05rem;
+  color: #cccccc;
+  margin-bottom: 30px;
+}
+
+/* --- LE LAYOUT FLEXBOX SÉCURISÉ --- */
+.mechanics-layout {
+  display: flex;
+  gap: 60px;
+  align-items: center; /* Aligne le texte et l'image horizontalement au centre */
+}
+
+/* Sens classique : Texte à gauche, Image à droite */
+.mechanics-layout.text-left {
+  flex-direction: row;
+}
+
+/* Sens inversé : Image à gauche, Texte à droite */
+.mechanics-layout.text-right {
+  flex-direction: row-reverse;
+}
+
+.mechanics-text {
+  flex: 1.2; /* Largeur équilibrée du texte */
+}
+
+.mechanics-media {
+  flex: 1; /* Largeur équilibrée de l'image */
+}
+
+.mechanics-poster {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  display: block;
+}
+
+.mechanics-poster-smaller {
+  width: 60%;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  display: block;
+}
+
+/* --- LISTES ET PUCES --- */
+.mechanics-list {
+  list-style-type: none;
+  padding-left: 15px;
+  margin: 0;
+}
+
+.mechanics-list li {
+  font-size: 1.05rem;
+  color: #cccccc;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.mechanics-list li::before {
+  content: "•";
+  color: #ff9f43;
+  font-weight: bold;
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+/* Sous-listes pour le bloc A */
+.mechanics-sub-list {
+  list-style-type: none;
+  padding-left: 25px;
+  margin-top: 10px;
+}
+
+.mechanics-sub-list li {
+  font-size: 1rem;
+  color: #b5b5b5;
+  margin-bottom: 12px;
+}
+
+.mechanics-sub-list li::before {
+  content: "◦";
+  color: #ff9f43;
+}
+
+/* Responsive portable */
+@media (max-width: 900px) {
+  .mechanics-layout.text-left, 
+  .mechanics-layout.text-right {
+    flex-direction: column;
+  }
+}
   </style>
 </head>
 <body>
 
+  <div class="voie-lactee"></div>
+
   <div class="container">
-    <!-- Bouton pour retourner à l'accueil -->
     <a href="index.html" class="back-link">← Retour à l'accueil</a>
 
-    <h1>Sky Legends - An Aeropostal Epic</h1>
-    <div class="meta">Rôle : Développeur / Année : 2026 / Contexte : Projet d'études</div>
+    <div class="project-layout">
+      
+      <main class="main-content">
+        <header class="project-header">
+          <h1>Sky Legends</h1>
+          <div class="subtitle">An Aeropostal Epic</div>
+        </header>
 
-    <section>
-      <h2>Le Brief / Le Problème</h2>
-      <p>Explique ici quelle était la demande initiale, le problème à résoudre ou l'objectif de ce projet. Pourquoi l'as-tu lancé ?</p>
-    </section>
+        <section>
+          <p>Incarnez les figures emblématiques des pionniers de l'aviation et pilotez leurs avions mythiques. Entre défis humains et exploits techniques, traversez les paysages extrêmes du Sahara, des Andes ou de l'Atlantique dans une aventure immersive, narrative et historique en réalité virtuelle.</p>
+        </section>
 
-    <section>
-      <h2>Ma Solution</h2>
-      <p>Détaille ici ce que tu as fait spécifiquement. Quelle technologie, quels outils ou quelle approche as-tu choisis et pourquoi ? C'est ça qui intéresse le recruteur.</p>
-    </section>
+        <section>
+  <h2></h2>
+  <p>Incarnez les figures emblématiques des pionniers de l'aviation et pilotez leurs avions mythiques. Entre défis humains et exploits techniques, traversez les paysages extrêmes du Sahara, des Andes ou de l'Atlantique dans une aventure immersive, narrative et historique en réalité virtuelle.</p>
+  
+  <p><em>Sky Legends - An Aeropostal Epic</em> est un jeu d'aventure narrative en réalité virtuelle, développé pour Meta Quest 3 et 3S. Il plonge le joueur dans l'histoire du fret aérien français après la Première Guerre mondiale à travers des expériences immersives.</p>
 
-    <section>
-      <h2>Résultats & Apprentissages</h2>
-      <p>Qu'est-ce que ce projet t'a apporté ? Est-ce qu'il a atteint ses objectifs ? Qu'as-tu appris en le faisant ?</p>
-    </section>
+  <p>Le jeu a été développé pendant 2 ans avec une équipe de 10 personnes, et la collaboration d'experts dans leur domaine.</p>
+
+  <p>J'ai participé à la conception et à la mise en place de plusieurs niveaux, incluant la création de puzzles à différentes difficultés et de séquences de vol inspirées d'événements historiques marquants.</p>
+</section>
+      </main>
+
+      <aside class="sidebar-media">
+        <img src="Packshot-SkyLegends-Portrait.png" alt="Affiche Sky Legends" class="project-poster">
+      </aside>
+
+    </div>
+  </div>
+<section class="challenges-section">
+  <h2>Challenges rencontrés</h2>
+  
+  <div class="challenges-layout">
+
+    <div class="challenges-gallery">
+      <img src="ScreenDaurat.png" alt="Gameplay Bureau VR" class="cascade-img img-1">
+      <img src="ScreenCordillera.png" alt="Séquence de vol VR" class="cascade-img img-2">
+      <img src="ScreenHangarBrasil.png" alt="Hangar et Avion" class="cascade-img img-3">
+      <img src="ScreenAfrica.png" alt="Vol de suivi" class="cascade-img img-4">
+    </div>
+
+    <div class="challenges-text-container">
+      
+      <div class="challenge-block">
+        <div class="challenge-title">— Adapter des métiers réels à une expérience VR ludique</div>
+        <div class="challenge-description">
+          <p>Le jeu s'inspire de métiers réels (pilotes, mécaniciens, personnel administratif), dont les tâches peuvent rapidement devenir répétitives ou peu engageantes en jeu. Le défi était donc de transformer ces activités en expériences interactives attractives, sans donner au joueur l'impression d'effectuer un travail.</p>
+        </div>
+        <div class="solution-title">+ Solutions</div>
+        <div class="solution-description">
+          <p>Les phases de vol ont été diversifiées (environnements, objectifs, appareils) afin de renouveler l’expérience. Les interactions mécaniques ont été condensées en séquences courtes et dynamiques, centrées sur la manipulation. Enfin, les aspects administratifs ont été transformés en puzzles liés à la gestion des lignes, des avions et du personnel.</p>
+        </div>
+      </div>
+
+<div class="challenge-block">
+        <div class="challenge-title">— Maintenir un bon rythme entre narration et gameplay</div>
+        <div class="challenge-description">
+          <p>Il était difficile de trouver un équilibre entre les phases narratives et les séquences de jeu, afin de ne pas ralentir le joueur tout en conservant la compréhension de l'histoire.</p>
+        </div>
+        <div class="solution-title">+ Solutions</div>
+        <div class="solution-description">
+          <p>Les informations clés ont été intégrées directement dans les dialogues et les interactions pour éviter les ruptures de rythme. En complément, des “Histoires” apparaissent à des moments de transition, entre deux séquences de jeu, afin de résumer la progression narrative sans interrompre l’expérience du joueur.</p>
+        </div>
+      </div>
+
+    <div class="challenge-footer-text">
+    <p>L'objectif de l'expérience utilisateur était de raconter l'histoire de manière fluide, sans interrompre le joueur, en trouvant un équilibre entre narration et interaction.</p>
   </div>
 
+</section>
+
+<section class="map-system-section">
+  
+  <div class="container">
+    
+    <div class="section-main-header">
+      <span class="project-mini-title">Sky Legends - An Aeropostal Epic</span>
+      <h1>Le système de la carte</h1>
+    </div>
+
+    <div class="map-layout">
+      
+      <div class="map-text-content">
+        <h2>Intention de Design</h2>
+        <p>
+          L’objectif est de proposer un puzzle de gestion de ressources spatialisé. 
+          Le joueur doit relier un point <strong>A</strong> à un point <strong>B</strong> 
+          en optimisant un budget et en gérant des contraintes techniques et humaines, 
+          le tout via une interface physique représentée par une carte du monde et des fils de laine.
+        </p>
+      </div>
+
+      <div class="map-media-sidebar">
+        <img src="CarteAeropostale.jpg" alt="Maquette du système de carte avec fils de laine" class="map-poster">
+      </div>
+
+    </div>
+
+  </div> </section>
+
+  <section class="map-details-section">
+  <div class="container">
+
+    <div class="map-layout">
+      
+      <div class="map-text-content">
+        <h2>Le Dispositif (Interface & Interaction)</h2>
+        <p>Le joueur interagit avec un mur sur lequel est affichée une carte du monde parsemée de points d'ancrage (villes).</p>
+        
+        <ul class="design-list">
+          <li>
+            <strong>Interaction de base :</strong> Le joueur utilise des <strong>pelotes de laine</strong> de couleurs différentes pour tracer physiquement ses routes commerciales.
+          </li>
+          <li>
+            <strong>Code couleur :</strong> Chaque couleur de laine correspond à un modèle d’avion spécifique, permettant une lecture immédiate des appareils déployés sur la carte.
+          </li>
+        </ul>
+      </div>
+
+      <div class="map-media-sidebar">
+        <div class="double-images-container">
+          <img src="LvlDesign2.png" alt="Carte Amérique du Sud" class="map-sub-poster">
+        </div>
+      </div>
+
+    </div>
+
+    <section class="gameplay-mechanics-section">
+  <div class="container">
+    
+    <div class="mechanics-header">
+      <h2>Les Mécaniques de Gameplay</h2>
+    </div>
+
+    <div class="mechanics-block">
+      <h3>A. Le système de Synergies (Traits et Contraintes)</h3>
+      <p class="mechanics-intro">La réussite d’une ligne de fret repose sur l’adéquation entre 3 éléments : la <strong>Route</strong>, l’<strong>Appareil</strong> et le <strong>Pilote</strong>.</p>
+      
+      <div class="mechanics-layout text-left">
+        <div class="mechanics-text">
+          <ul class="mechanics-list">
+            <li>
+              <strong>Les Segments de Route :</strong> Certains trajets possèdent des modificateurs (Vents violents, Longues distances, Zones turbulentes, ...).
+            </li>
+            <li>
+              <strong>Les Statistiques (Avions & Pilotes) :</strong> Chaque avion et chaque pilote possède des capacités spécifiques.
+              <ul class="mechanics-sub-list">
+                <li><em>Exemple :</em> Un trajet "Longue distance" nécessite impérativement un avion avec le trait "Vol Long".</li>
+                <li><em>Conditions de succès :</em> Pour valider une ligne, le joueur doit assigner <strong>1 Avion</strong> + <strong>1 Pilote</strong> dont les statistiques cumulées couvrent les exigences de la route choisie.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="mechanics-media">
+          <img src="PelotesAvions.png" alt="Fiches caractéristiques des avions Laté-25, Potez-25 et Breguet XIV" class="mechanics-poster">
+        </div>
+      </div>
+    </div>
+
+    <div class="mechanics-block">
+      <div class="mechanics-layout text-right">
+        <div class="mechanics-media">
+          <img src="ZoomMap.png" alt="Rapport accident et ligne de vol" class="mechanics-poster-smaller">
+        </div>
+        <div class="mechanics-text">
+          <h3>B. Économie et Rentabilité</h3>
+          <ul class="mechanics-list">
+            <li>
+              <strong>Revenus :</strong> La rentabilité d’une ligne varie selon l’efficacité de l’avion utilisé et du pilote choisi.
+            </li>
+            <li>
+              <strong>Gestion du Budget :</strong> Le joueur doit créer son réseau sans dépasser une enveloppe budgétaire globale, l’obligeant à faire des compromis entre des avions coûteux (performants) et des pilotes plus abordables (moins qualifiés), ou inversement.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mechanics-block">
+      <div class="mechanics-layout text-right">
+        <div class="mechanics-media">
+          <img src="EcranRef-RapportAccident.jpg" alt="Interface des incidents sur la carte" class="mechanics-poster">
+        </div>
+        <div class="mechanics-text">
+          <h3>C. Événements Aléatoires (Incidents)</h3>
+          <p>Pour briser la linéarité, des accidents peuvent survenir. Le joueur est alors contraint de réagir en temps réel :</p>
+          <ul class="mechanics-list">
+            <li>Perte d'un appareil ou d'un pilote sur une ligne active.</li>
+            <li>Nécessité de réallouer les ressources disponibles pour rétablir le flux de fret.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+<div class="mechanics-block" style="margin-top: 80px;">
+  
+  <div class="mechanics-header" style="margin-bottom: 30px;">
+    <h2>Équilibrage Économique et Courbe de Progression</h2>
+    <h3>1. Structure de la Difficulté : Le Modèle Scalable</h3>
+    <p class="mechanics-intro" style="margin-bottom: 0;">
+      Le jeu suit une courbe de difficulté organique où la complexité croît avec les capacités du joueur :
+    </p>
+  </div>
+
+  <div class="mechanics-layout text-left">
+    
+    <div class="mechanics-media">
+      <img src="GraphArgentLigne.png" alt="Graphique" class="mechanics-poster">
+    </div>
+    
+    <div class="mechanics-text">
+      <ul class="mechanics-list">
+        <li>
+          <strong>Early Game (Lancement) :</strong> Les ressources sont limitées mais les contraintes sont faibles. Le joueur apprend à manipuler la laine et à comprendre les traits de base.
+        </li>
+        <li>
+          <strong>Mid/Late Game (Expansion) :</strong> Le coût des trajets augmente drastiquement. La difficulté ne vient pas d'une barrière infranchissable, mais de la nécessité de <strong>gérer un réseau</strong> plutôt qu'une ligne unique.
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<div class="mechanics-block" style="margin-top: 60px;">
+      
+      <div class="mechanics-header" style="margin-bottom: 40px;">
+        <h3>2. Le Dilemme Stratégique : Expansion vs Rush</h3>
+        <p class="mechanics-intro">
+          Pour éviter que le joueur ne fonce en ligne droite vers l'objectif final, le design impose des "nœuds de rentabilité" :
+        </p>
+        <ul class="mechanics-list" style="margin-bottom: 50px;">
+          <li>
+            <strong>Le Piège du Point B :</strong> Se ruer vers l'arrivée est économiquement impossible sans avoir au préalable établi des lignes secondaires pour générer un cash-flow suffisant.
+          </li>
+          <li>
+            <strong>Arbitrage des Lignes :</strong> Le joueur est régulièrement confronté à un choix binaire entre deux trajets. Il doit calculer lequel offre le meilleur retour sur investissement (ROI) à long terme par rapport au coût immédiat de l'avion et du pilote.
+          </li>
+        </ul>
+      </div>
+
+      <div class="mechanics-layout text-left">
+        
+        <div class="mechanics-media">
+          <img src="LivreDeRecherche.png" alt="Interface du carnet de progression de la recherche" class="mechanics-poster">
+        </div>
+        
+        <div class="mechanics-text">
+          <h3>3. Gestion de l'Upgrade (Le "Moment Clé")</h3>
+          <p>Chaque modèle d'avion (couleur de pelote) ne peut être amélioré qu'<strong>une seule fois</strong>.</p>
+          
+          <ul class="mechanics-list">
+            <li>
+              <strong>Impact :</strong> L'amélioration est coûteuse et irréversible pour la partie en cours.
+            </li>
+            <li>
+              <strong>Timing :</strong> Le joueur doit identifier le point de bascule où l'investissement dans un moteur plus puissant ou une meilleure portée devient plus rentable que l'achat d'un nouveau pilote. C'est le cœur du "Theorycrafting" du jeu.
+            </li>
+          </ul>
+        </div>
+
+      </div> </div>
+
+      <div class="mechanics-block full-width-text" style="margin-top: 50px;">
+      
+      <h3>4. Rythme et Temps Mort (Pacing)</h3>
+      <p class="mechanics-intro">
+        Le design utilise un système de <strong>revenus passifs</strong> pour synchroniser les différentes phases de jeu :
+      </p>
+      
+      <ul class="mechanics-list">
+        <li>
+          <strong>Temps Masqué :</strong> Pendant que le joueur effectue d'autres activités (recrutement, achat de matériel), ses lignes actives génèrent de l'argent en arrière-plan.
+        </li>
+        <li>
+          <strong>Flux Tendu :</strong> L'économie est calibrée pour que le montant récolté à la fin d'une activité secondaire corresponde exactement au besoin financier du prochain choix stratégique sur la carte. Cela élimine l'attente frustrante et maintient le joueur dans un état de décision permanente.
+        </li>
+      </ul>
+
+    </div>
+
+    <div class="mechanics-block" style="margin-top: 80px;">
+      
+      <div class="mechanics-header" style="margin-bottom: 40px;">
+        <h2>Optimisation de l’Ergonomie et de la Charge Mentale (VR)</h2>
+      </div>
+
+      <div class="mechanics-layout text-left">
+        
+        <div class="mechanics-media">
+          <img src="MapTownsPos.png" alt="Prototype de l'interface disposée sur un bureau en VR" class="mechanics-poster">
+        </div>
+        
+        <div class="mechanics-text">
+          <h3>Analyse du Prototype Initial</h3>
+          <p style="margin-bottom: 25px;">
+            Les tests du prototype ont révélé que la configuration verticale (murale) imposait une contrainte physique excessive pour une expérience en réalité virtuelle. Le maintien d’une position debout et les mouvements amples nécessaires au tracé sur un mur nuisaient au confort sur le long terme. De plus, la simultanéité des tâches de gestion créait une surcharge cognitive incompatible avec une session de jeu fluide.
+          </p>
+
+          <h3>Refonte du Layout et Confort Utilisateur</h3>
+          <p>Pour pallier ces problématiques, l’interface et les mécaniques ont été restructurées :</p>
+          
+          <ul class="mechanics-list">
+            <li>
+              <strong>Posture Assise et Spatialisation :</strong> La carte du monde est désormais disposée sur un bureau. Cette configuration permet au joueur de rester assis, réduisant la fatigue physique tout en ancrant son environnement virtuel de manière plus stable et sécurisante.
+            </li>
+          </ul>
+        </div>
+
+      </div> </div>
+
+      <div class="mechanics-block" style="margin-top: 60px;">
+      
+      <div class="mechanics-layout text-left">
+        
+        <div class="mechanics-media">
+          <img src="MapInkwellMoney.png" alt="Interface du budget d'achat d'avion et tampons en VR" class="mechanics-poster">
+        </div>
+        
+        <div class="mechanics-text">
+          <ul class="mechanics-list" style="margin-bottom: 40px;">
+            <li>
+              <strong>Segmentation des Activités :</strong> Le recrutement des pilotes et l’amélioration des appareils ont été isolés du système de tracé. Ces tâches constituent désormais des phases distinctes : le joueur finalise sa stratégie de ligne, puis bascule sur ses autres responsabilités de gestion. Cette séparation nette clarifie la boucle de gameplay.
+            </li>
+          </ul>
+
+          <h3>Évolution des Interactions Tactiles</h3>
+          <p>
+            Le système d'interaction a été affiné pour gagner en précision et en élégance visuelle :
+          </p>
+        </div>
+
+      </div> </div>
+
+      <div class="mechanics-block" style="margin-bottom: 40px;">
+      
+      <div class="mechanics-layout text-left">
+        
+        <div class="mechanics-text">
+          <ul class="mechanics-list" style="margin-bottom: 40px;">
+            <li>
+              <strong>Segmentation des Activités :</strong> Le recrutement des pilotes et l’amélioration des appareils ont été isolés du système de tracé. Ces tâches constituent désormais des phases distinctes : le joueur finalise sa stratégie de ligne, puis bascule sur ses autres responsabilités de gestion. Cette séparation nette clarifie la boucle de gameplay.
+            </li>
+          </ul>
+
+          <h3>Évolution des Interactions Tactiles</h3>
+          <p style="margin-bottom: 20px;">
+            Le système d'interaction a été affiné pour gagner en précision et en élégance visuelle :
+          </p>
+          
+          <ul class="mechanics-list">
+            <li>
+              <strong>Transition du Matériel :</strong> Le système de pelotes de laine a été remplacé par un usage plus sobre du <strong>stylo plume</strong> et d'<strong>encriers de couleurs</strong>.
+            </li>
+            <li>
+              <strong>Lisibilité du Réseau :</strong> Chaque couleur d'encre correspond à un modèle d'avion spécifique. Le tracé à l'encre sur la carte offre une précision supérieure à la manipulation de fils, facilitant la lecture du réseau de fret tout en renforçant l'esthétique "bureau de commandement" du titre.
+            </li>
+          </ul>
+        </div>
+
+      </div> </div>
+ </section>
   <footer>
     © 2026 Pinel Raphaël
   </footer>
